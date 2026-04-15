@@ -230,6 +230,9 @@ export default function PlayerPanel({
   gameOver,
   onReset,
   onResetAll,
+  onHome,
+  roomCode,
+  mySlot,
 }) {
   const [collapsed, setCollapsed] = useState(false)
 
@@ -262,13 +265,22 @@ export default function PlayerPanel({
         onClick={() => setCollapsed(c => !c)}
       >
         <div>
-          <div style={{
-            fontSize: 13,
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            letterSpacing: '0.04em',
-          }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '0.04em' }}>
             4P Tic-Tac-Toe
+            {roomCode && (
+              <span style={{
+                marginLeft: 6,
+                fontSize: 9,
+                background: 'rgba(124,58,237,0.25)',
+                border: '1px solid rgba(124,58,237,0.4)',
+                color: 'var(--purple-light)',
+                padding: '1px 5px',
+                borderRadius: 3,
+                fontFamily: 'var(--font-mono)',
+                fontWeight: 700,
+                letterSpacing: '0.1em',
+              }}>{roomCode}</span>
+            )}
           </div>
           <div style={{
             fontSize: 10,
@@ -350,6 +362,33 @@ export default function PlayerPanel({
               Reset All
             </button>
           </div>
+
+          {/* Home button */}
+          {onHome && (
+            <div style={{ padding: '0 16px 10px' }}>
+              <button
+                id="btn-go-home"
+                onClick={onHome}
+                style={{
+                  width: '100%',
+                  padding: '6px 0',
+                  background: 'transparent',
+                  border: '1px solid rgba(255,255,255,0.07)',
+                  borderRadius: 7,
+                  color: 'var(--text-muted)',
+                  fontSize: 10,
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'color 0.2s, border-color 0.2s',
+                }}
+                onMouseEnter={e => { e.target.style.color = '#f472b6'; e.target.style.borderColor = 'rgba(244,114,182,0.25)' }}
+                onMouseLeave={e => { e.target.style.color = 'var(--text-muted)'; e.target.style.borderColor = 'rgba(255,255,255,0.07)' }}
+              >
+                ← Home
+              </button>
+            </div>
+          )}
 
           {/* Help */}
           <div style={{

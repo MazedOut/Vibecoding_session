@@ -28,6 +28,7 @@ export default function GameBoard({
   lastMove,
   gameOver,
   onPlace,
+  ghostDisabled = false,
 }) {
   const containerRef = useRef(null)
   const canvasRef = useRef(null)
@@ -258,12 +259,12 @@ export default function GameBoard({
 
   // Ghost cell (hover preview)
   const ghostCell = useMemo(() => {
-    if (!hoverCell || gameOver || isDragging) return null
+    if (!hoverCell || gameOver || isDragging || ghostDisabled) return null
     const k = `${hoverCell.x},${hoverCell.y}`
     if (board[k] !== undefined) return null
     const { sx, sy } = worldToScreen(hoverCell.x, hoverCell.y)
     return { sx, sy, player: PLAYERS[currentPlayer] }
-  }, [hoverCell, gameOver, isDragging, board, worldToScreen, currentPlayer])
+  }, [hoverCell, gameOver, isDragging, ghostDisabled, board, worldToScreen, currentPlayer])
 
   return (
     <div

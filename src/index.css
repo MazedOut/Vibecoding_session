@@ -100,3 +100,8 @@ body {
   0%, 100% { box-shadow: 0 0 8px var(--current-glow); }
   50% { box-shadow: 0 0 24px var(--current-glow), 0 0 48px var(--current-glow); }
 }
+
+@keyframes float-up {
+  0%   { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+}

@@ -12,7 +12,7 @@ const DIRECTIONS = [[1,0],[0,1],[1,1],[1,-1]]
 
 function key(x, y) { return `${x},${y}` }
 
-function checkWin(board, x, y, playerId) {
+export function checkWin(board, x, y, playerId) {
   for (const [dx, dy] of DIRECTIONS) {
     let count = 1
     for (let i = 1; i < WIN_LENGTH; i++) {
@@ -28,7 +28,7 @@ function checkWin(board, x, y, playerId) {
   return false
 }
 
-function getWinningCells(board, x, y, playerId) {
+export function getWinningCells(board, x, y, playerId) {
   for (const [dx, dy] of DIRECTIONS) {
     const cells = [[x, y]]
     for (let i = 1; i < WIN_LENGTH; i++) {
@@ -50,7 +50,7 @@ function getWinningCells(board, x, y, playerId) {
  * that a player could still win (no opponent blocking).
  * Weight: 1^1, 2^2, 3^3, ... pieces in window.
  */
-function calcPredictions(board, scores) {
+export function calcPredictions(board, scores) {
   const rawScores = [0, 0, 0, 0]
   const keys = Object.keys(board)
 

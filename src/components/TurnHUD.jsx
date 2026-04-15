@@ -1,6 +1,6 @@
 import { PLAYERS } from '../hooks/useGameLogic'
 
-export default function TurnHUD({ currentPlayer, gameOver, moveCount }) {
+export default function TurnHUD({ currentPlayer, gameOver, moveCount, roomCode, mySlot, isMyTurn }) {
   if (gameOver) return null
   const p = PLAYERS[currentPlayer]
 
@@ -55,8 +55,35 @@ export default function TurnHUD({ currentPlayer, gameOver, moveCount }) {
           fontWeight: 700,
           color: p.color,
           lineHeight: 1.2,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
         }}>
           {p.name}
+          {/* Multiplayer: show "Your turn!" badge */}
+          {roomCode && isMyTurn && (
+            <span style={{
+              fontSize: 9,
+              background: p.color,
+              color: '#000',
+              padding: '1px 5px',
+              borderRadius: 3,
+              fontWeight: 700,
+              letterSpacing: '0.06em',
+              animation: 'drop-in 0.3s ease-out',
+            }}>YOUR TURN</span>
+          )}
+          {roomCode && !isMyTurn && mySlot !== null && (
+            <span style={{
+              fontSize: 9,
+              border: `1px solid ${p.color}`,
+              color: p.color,
+              padding: '1px 5px',
+              borderRadius: 3,
+              opacity: 0.7,
+              letterSpacing: '0.06em',
+            }}>WAIT</span>
+          )}
         </div>
         <div style={{
           fontSize: 10,
@@ -64,7 +91,10 @@ export default function TurnHUD({ currentPlayer, gameOver, moveCount }) {
           fontFamily: 'var(--font-mono)',
           lineHeight: 1.2,
         }}>
-          Move #{moveCount + 1}
+          {roomCode
+            ? <>Move #{moveCount + 1} · <span style={{ color: 'var(--purple-light)', letterSpacing: '0.1em' }}>{roomCode}</span></>
+            : <>Move #{moveCount + 1}</>
+          }
         </div>
       </div>
     </div>
