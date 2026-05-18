@@ -2,8 +2,6 @@
 
 A turn-based, infinite-canvas multiplayer Tic-Tac-Toe for **4 players** with automatic win detection and live win-prediction percentages.
 
-![Game Screenshot](./screenshot.png)
-
 ---
 
 ## ✨ Features
@@ -15,6 +13,7 @@ A turn-based, infinite-canvas multiplayer Tic-Tac-Toe for **4 players** with aut
 | **Turn-Based** | Players alternate turns in order |
 | **Auto Win Detection** | 4 in a row (any direction) wins — highlighted instantly |
 | **Win Prediction** | Live percentage bar shows each player's probability of winning |
+| **Same-Browser Multiplayer** | Multiple tabs on the same machine via BroadcastChannel API |
 | **Move History Log** | Scrollable log of every move with coordinates |
 | **Ranking / Scoreboard** | Persistent win scores across multiple games |
 | **Teal / Purple UI** | Glassmorphic dark theme with glowing pieces |
@@ -31,12 +30,11 @@ A turn-based, infinite-canvas multiplayer Tic-Tac-Toe for **4 players** with aut
 ### Steps
 
 ```bash
-# 1. Clone or extract the project
+# 1. Clone the repo
 git clone https://github.com/YOUR_USERNAME/four-player-ttt.git
-# — OR — unzip the downloaded zip
 
-# 2. Enter the project folder
-cd four-player-ttt
+# 2. Enter the frontend folder
+cd four-player-ttt/frontend
 
 # 3. Install dependencies
 npm install
@@ -59,6 +57,11 @@ The game will be available at **http://localhost:5173**
 | **New Game** | Start a fresh board (keeps scores) |
 | **Reset All** | Clear board + scores |
 
+### Multiplayer (same machine)
+1. Open the game in one tab — click **Create Room** to get a room code
+2. Open 1–3 more tabs and click **Join Room**, entering the same code
+3. Each tab controls one player — take turns clicking cells
+
 The **top-center HUD** always shows whose turn it is and the move number.  
 The **right panel** shows per-player win-prediction percentages, scores, and move history.
 
@@ -68,20 +71,37 @@ The **right panel** shows per-player win-prediction percentages, scores, and mov
 
 ```
 four-player-ttt/
-├── index.html              # Entry HTML
-├── package.json            # Dependencies
-├── vite.config.js          # Vite config
-└── src/
-    ├── main.jsx            # React root
-    ├── App.jsx             # App shell
-    ├── index.css           # Global styles + CSS variables
-    ├── hooks/
-    │   └── useGameLogic.js # Game state, win detection, predictions
-    └── components/
-        ├── GameBoard.jsx   # Infinite canvas board
-        ├── PlayerPanel.jsx # Scores, predictions, history sidebar
-        ├── TurnHUD.jsx     # Turn indicator (top center)
-        └── WinOverlay.jsx  # Victory screen
+├── docs/                          # Project planning & specs
+│   ├── plan.md
+│   ├── specs.md
+│   └── tasks.md
+│
+├── frontend/                      # All React/Vite source code
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.js
+│   └── src/
+│       ├── main.jsx               # React root
+│       ├── App.jsx                # App shell
+│       ├── index.css              # Global styles + CSS variables
+│       ├── components/
+│       │   ├── GameBoard.jsx      # Infinite canvas board
+│       │   ├── PlayerPanel.jsx    # Scores, predictions, history sidebar
+│       │   ├── TurnHUD.jsx        # Turn indicator (top center)
+│       │   ├── WinOverlay.jsx     # Victory screen
+│       │   ├── LobbyScreen.jsx    # Room creation / join UI
+│       │   └── MultiplayerLobby.jsx
+│       ├── hooks/
+│       │   ├── useGameLogic.js    # Win detection, predictions, game state
+│       │   └── useMultiplayer.js  # Host/guest state machine
+│       └── services/
+│           └── roomService.js     # BroadcastChannel transport layer
+│
+├── backend/
+│   └── README.md                  # Sync strategy + future migration path
+│
+├── .gitignore
+└── README.md
 ```
 
 ---
@@ -102,22 +122,11 @@ This means a player with 3-in-a-row scores `3² = 9` per open line, while 2-in-a
 ## 🛠️ Build for Production
 
 ```bash
+cd frontend
 npm run build
 ```
 
-Output goes to `dist/` — deploy this to GitHub Pages, Netlify, Vercel, etc.
-
-### Deploy to GitHub Pages
-
-```bash
-# Install gh-pages helper
-npm install --save-dev gh-pages
-
-# Add to package.json scripts:
-# "deploy": "vite build && gh-pages -d dist"
-
-npm run deploy
-```
+Output goes to `frontend/dist/` — deploy this folder to GitHub Pages, Netlify, Vercel, etc.
 
 ---
 
@@ -125,6 +134,7 @@ npm run deploy
 
 - **React 18** — UI components
 - **Vite 5** — Dev server & bundler
+- **BroadcastChannel API** — Same-browser tab-to-tab multiplayer
 - **Canvas API** — Grid rendering
 - **CSS Variables** — Theming system
 - **Google Fonts** — Syne + JetBrains Mono
